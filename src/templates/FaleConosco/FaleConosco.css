@@ -1,0 +1,90 @@
+
+.footer-custom {
+  background-color: rgb(207, 1, 124) !important;
+  color: white !important;
+}
+
+.footer-custom a {
+  color: white !important;
+  text-decoration: none;
+}
+
+.footer-custom a:hover {
+  text-decoration: underline;
+}
+
+.formulario-card {
+  position: relative;
+  z-index: 1;
+}
+
+.agradecimento-section {
+  position: relative;
+  z-index: 0;
+}
+
+.footer-custom {
+  background-color: #212529; /* cor escura */
+  color: #fff;               /* texto branco */
+  padding: 1.5rem 1rem;      /* espaçamento confortável */
+  margin-top: auto;          /* empurra o footer para o fim do flex container */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3); /* sombra sutil em cima do footer */
+}
+
+.footer-custom a {
+  color: #ffffffcc; /* links brancos com leve transparência */
+  transition: color 0.3s ease;
+}
+
+.footer-custom a:hover {
+  color:rgb(207, 1, 124); 
+  text-decoration: underline;
+}
+
+.footer-custom hr {
+  border-color: #444; /* linha divisória discreta */
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.footer-custom .small {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.btn-custom {
+  background-color: rgb(207, 1, 124);
+  border-color: rgb(207, 1, 124);
+  color: white;
+}
+
+.btn-custom:hover {
+  background-color: rgb(180, 0, 110); /* opcional para hover */
+  border-color: rgb(180, 0, 110);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.container-fluid {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+.footer-custom {
+  margin-top: auto;
+}
+
+.formulario-card {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.agradecimento-section {
+  background-color: #f8f9fa;
+}

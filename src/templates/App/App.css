@@ -1,0 +1,27 @@
+
+.footer-custom {
+  background-color: rgb(207, 1, 124) !important;
+  color: white !important;
+}
+
+.footer-custom a {
+  color: white !important;
+  text-decoration: none;
+}
+
+.footer-custom a:hover {
+  text-decoration: underline;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.card {
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
