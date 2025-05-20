@@ -1,90 +1,87 @@
-
-.footer-custom {
-  background-color: rgb(207, 1, 124) !important;
-  color: white !important;
+/* Aplica o fundo cinzinha claro para toda a página */
+body {
+  background-color: #f7fafc; /* cinza clarinho */
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.footer-custom a {
-  color: white !important;
-  text-decoration: none;
+/* Container centralizado e espaçado */
+.faleconosco-container {
+  max-width: 600px;
+  margin: 60px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-.footer-custom a:hover {
-  text-decoration: underline;
+/* Título do formulário */
+.faleconosco-container h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
-.formulario-card {
-  position: relative;
-  z-index: 1;
+/* Subtítulo */
+.faleconosco-container p.lead {
+  font-size: 1rem;
+  color: #475569;
+  margin-bottom: 24px;
+  text-align: center;
 }
 
-.agradecimento-section {
-  position: relative;
-  z-index: 0;
+/* Labels */
+.form-label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: #334155;
+  font-size: 0.95rem;
 }
 
-.footer-custom {
-  background-color: #212529; /* cor escura */
-  color: #fff;               /* texto branco */
-  padding: 1.5rem 1rem;      /* espaçamento confortável */
-  margin-top: auto;          /* empurra o footer para o fim do flex container */
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3); /* sombra sutil em cima do footer */
+/* Inputs e textarea */
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #cbd5e1;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
 }
 
-.footer-custom a {
-  color: #ffffffcc; /* links brancos com leve transparência */
-  transition: color 0.3s ease;
+.form-control:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.4);
+  outline: none;
 }
 
-.footer-custom a:hover {
-  color:rgb(207, 1, 124); 
-  text-decoration: underline;
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
 }
 
-.footer-custom hr {
-  border-color: #444; /* linha divisória discreta */
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-.footer-custom .small {
-  font-size: 0.8rem;
-  opacity: 0.7;
-}
-
+/* Botão personalizado */
 .btn-custom {
-  background-color: rgb(207, 1, 124);
-  border-color: rgb(207, 1, 124);
+  background: rgb(255, 0, 153);
   color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .btn-custom:hover {
-  background-color: rgb(180, 0, 110); /* opcional para hover */
-  border-color: rgb(180, 0, 110);
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.container-fluid {
-  padding: 0 !important;
-  margin: 0 !important;
-  width: 100% !important;
-}
-
-.footer-custom {
-  margin-top: auto;
-}
-
-.formulario-card {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.agradecimento-section {
-  background-color: #f8f9fa;
+  background: rgb(230, 0, 140); /* tom um pouco mais escuro no hover */
+  transform: translateY(-1px);
 }

@@ -1,80 +1,104 @@
-import { useState } from 'react'
-import './FaleConosco.css'
-import { Link } from 'react-router-dom'
-import logo from '../../assets/images/logo-fieb.png'
+import { useState } from 'react';
+import './FaleConosco.css';
 
 function FaleConosco() {
-  const [count, setCount] = useState(0)
+  const [formData, setFormData] = useState({
+    nome: '',
+    email: '',
+    titulo: '',
+    mensagem: '',
+  });
+
+  const [submitted, setSubmitted] = useState(false);
+
+  function handleChange(e) {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.id]: e.target.value,
+    }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setSubmitted(true);
+  }
+
+  if (submitted) {
+    return (
+      <div className="faleconosco-container">
+        <section id="faleconosco" className="faleconosco-card">
+          <h2>✨ Obrigado pela sua mensagem!</h2>
+          <p>Entraremos em contato o mais breve possível.</p>
+          <button className="btn-custom" onClick={() => setSubmitted(false)}>
+            Enviar outra mensagem
+          </button>
+        </section>
+      </div>
+    );
+  }
 
   return (
-    <div className='container-fluid'>
-      <section
-        id="faleconosco"
-        className="text-dark py-5 formulario-card"
-        style={{ borderRadius: '8px', backgroundColor: '#f8f9fa' }}
-      >
-        <div className="container text-center">
-          <h2 className="mb-4">
-            <i className="bi bi-envelope-fill me-2"></i>
-            Fale Conosco
-          </h2>
-          <p className="lead mb-5">
-            Tem dúvidas, sugestões ou precisa de ajuda? Envie sua mensagem para a gente!
-          </p>
+    <div className="faleconosco-container">
+      <section id="faleconosco" className="faleconosco-card">
+        <h2>
+          <span role="img" aria-label="envelope">📧</span> Fale Conosco
+        </h2>
+        <p className="lead">
+          Tem dúvidas, sugestões ou precisa de ajuda? Envie sua mensagem para a gente!
+        </p>
 
-          <div className="row justify-content-center">
-            <div className="col-12 col-md-8">
-              <div className="card h-100 shadow-sm p-4">
-                <form>
-                  {/* Nome */}
-                  <div className="mb-3 text-start">
-                    <label htmlFor="nome" className="form-label">Nome</label>
-                    <input type="text" className="form-control" id="nome" placeholder="Seu nome" />
-                  </div>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="nome" className="form-label">Nome</label>
+          <input
+            id="nome"
+            type="text"
+            className="form-control"
+            placeholder="Seu nome"
+            value={formData.nome}
+            onChange={handleChange}
+            required
+          />
 
-                  {/* Email */}
-                  <div className="mb-3 text-start">
-                    <label htmlFor="email" className="form-label">Email</label>
-                    <input type="email" className="form-control" id="email" placeholder="seuemail@exemplo.com" />
-                  </div>
+          <label htmlFor="email" className="form-label" style={{ marginTop: '20px' }}>Email</label>
+          <input
+            id="email"
+            type="email"
+            className="form-control"
+            placeholder="seuemail@exemplo.com"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
 
-                  {/* Título do motivo */}
-                  <div className="mb-3 text-start">
-                    <label htmlFor="titulo" className="form-label">Título do motivo</label>
-                    <input type="text" className="form-control" id="titulo" placeholder="Título" />
-                  </div>
+          <label htmlFor="titulo" className="form-label" style={{ marginTop: '20px' }}>Título do motivo</label>
+          <input
+            id="titulo"
+            type="text"
+            className="form-control"
+            placeholder="Título"
+            value={formData.titulo}
+            onChange={handleChange}
+            required
+          />
 
-                  {/* Detalhamento do motivo */}
-                  <div className="mb-3 text-start">
-                    <label htmlFor="mensagem" className="form-label">Detalhamento</label>
-                    <textarea className="form-control" id="mensagem" rows="4" placeholder="Descreva sua mensagem"></textarea>
-                  </div>
+          <label htmlFor="mensagem" className="form-label" style={{ marginTop: '20px' }}>Detalhamento</label>
+          <textarea
+            id="mensagem"
+            className="form-control"
+            rows="4"
+            placeholder="Descreva sua mensagem"
+            value={formData.mensagem}
+            onChange={handleChange}
+            required
+          />
 
-                  {/* Botão enviar */}
-                  <button type="submit" className="btn btn-custom w-100">
-                    Enviar Mensagem
-                  </button>
-
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="agradecimento"
-        className="shadow-sm text-center agradecimento-section py-5"
-        style={{
-          borderRadius: '0',
-          marginTop: '0',
-          backgroundColor: '#f8f9fa',
-        }}
-      >
+          <button type="submit" className="btn-custom">
+            Enviar Mensagem
+          </button>
+        </form>
       </section>
     </div>
-
-  )
+  );
 }
 
-export default FaleConosco
+export default FaleConosco;

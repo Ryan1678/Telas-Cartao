@@ -1,26 +1,93 @@
-footer{
-  background-color:rgb(207, 1, 124);
-  margin-top: 10px;
-  padding: 10px;
+.produtos-container {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 3rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.produtos-section {
+  max-width: 900px;
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  padding: 2.5rem 3rem;
+  box-shadow: 0 6px 15px rgb(0 0 0 / 0.1);
   text-align: center;
 }
 
-section{
-  height: 500px;
+.produtos-section h1 {
+  font-size: 2.8rem;
+  color: #222;
+  margin-bottom: 0.5rem;
 }
 
-.footer-custom {
-  background-color: rgb(207, 1, 124) !important;
-  color: white !important;
+.produtos-subtitle {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2.5rem;
 }
 
-.footer-custom a {
-  color: white !important;
-  text-decoration: none;
+.produtos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.8rem;
 }
 
-.footer-custom a:hover {
-  text-decoration: underline;
+.produto-card {
+  background-color: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+  transition: transform 0.25s ease;
 }
 
+.produto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgb(255 0 153 / 0.3);
+}
 
+.produto-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.produto-info {
+  padding: 1rem 1.2rem;
+  text-align: left;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.produto-info h3 {
+  margin: 0 0 0.4rem 0;
+  color: #222;
+  font-size: 1.2rem;
+}
+
+.produto-tipo {
+  display: inline-block;
+  background-color: rgb(255, 0, 153, 0.1);
+  color: rgb(255, 0, 153);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  user-select: none;
+  align-self: flex-start;
+}
+
+.produto-descricao {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.3;
+  flex-grow: 1;
+}

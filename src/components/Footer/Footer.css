@@ -1,0 +1,68 @@
+.footer-custom {
+  background-color: rgb(205, 2, 124) !important;
+  color: #fff !important;
+  padding: 1rem 0 !important;
+  font-size: 0.9rem !important;
+  text-align: center !important;
+}
+
+.footer-inner {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: 2rem !important;
+
+  max-width: 1200px;
+  margin: 0 auto !important;       /* centraliza horizontalmente */
+  padding: 0 !important;            /* remove todo padding */
+  width: 100% !important;           /* usa largura total do pai */
+  box-sizing: border-box !important;
+
+  position: relative !important;    /* evita bugs de posicionamento */
+  left: 0 !important;               /* zera qualquer deslocamento */
+}
+
+
+
+.footer-section {
+  max-width: 250px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.footer-custom nav {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.25rem !important;
+}
+
+.footer-custom a {
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+.footer-custom a:hover {
+  text-decoration: underline !important;
+}
+
+.social-icons {
+  display: flex !important;
+  gap: 0.5rem !important;
+  justify-content: center !important;
+}
+
+.social-icons i {
+  font-size: 1.2rem !important;
+}
+
+.footer-custom hr {
+  border-color: #6c757d !important;
+  margin: 0.5rem 0 !important;
+}
+
+.copy {
+  font-size: 0.8rem !important;
+}

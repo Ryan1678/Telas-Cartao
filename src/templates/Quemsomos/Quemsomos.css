@@ -1,29 +1,117 @@
-footer{
-  background-color:rgb(207, 1, 124);
-  margin-top: 10px;
-  padding: 10px;
+.quemsomos-container {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 3rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.quem-section {
+  max-width: 900px;
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  padding: 2.5rem 3rem;
+  box-shadow: 0 6px 15px rgb(0 0 0 / 0.1);
+}
+
+.content-wrapper {
   text-align: center;
 }
 
-section{
-  height: 500px;
+.logo {
+  width: 160px;
+  margin-bottom: 1.5rem;
 }
 
-.footer-custom {
-  background-color: rgb(207, 1, 124) !important;
-  color: white !important;
+h1 {
+  font-size: 2.8rem;
+  color: #222;
+  margin-bottom: 1rem;
 }
 
-.footer-custom a {
-  color: white !important;
-  text-decoration: none;
+.descricao {
+  font-size: 1.15rem;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 2rem;
 }
 
-.footer-custom a:hover {
-  text-decoration: underline;
+.prop-card {
+  background-color: #fef2f7; /* um rosinha suave */
+  border-radius: 10px;
+  padding: 1.8rem 2rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 3px 10px rgb(255 0 153 / 0.15);
+  color: #6b2e52;
 }
-html, body, #root {
-  height: 100%;
+
+.prop-card h2 {
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.prop-card p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.equipe-titulo {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #222;
+}
+
+.equipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(160px,1fr));
+  gap: 1.6rem;
+  justify-items: center;
+}
+
+.equipe-card {
+  background-color: #fafafa;
+  border-radius: 12px;
+  padding: 1.2rem 1rem;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  width: 100%;
+  max-width: 160px;
+  transition: transform 0.25s ease;
+  cursor: default;
+}
+
+.equipe-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 15px rgb(255 0 153 / 0.3);
+}
+
+.avatar-placeholder {
+  background-color: rgb(255, 0, 153);
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 auto 0.7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+
+.equipe-card h3 {
+  margin: 0.3rem 0 0.5rem 0;
+  font-weight: 600;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.equipe-card p {
+  font-size: 0.9rem;
+  color: #666;
   margin: 0;
-  padding: 0;
+  line-height: 1.3;
 }

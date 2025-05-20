@@ -1,86 +1,57 @@
-import { useState } from 'react'
-import './App.css'
-import { Link } from 'react-router-dom'
-import logo from '../../assets/images/logo-fieb.png'
+import React from 'react';
+import './App.css'; // importe o arquivo CSS
 
 function App() {
-  const [count, setCount] = useState(0)
+  const categorias = [
+    { emoji: '🛍️', title: 'Salgados', text: 'Chips e snacks crocantes para matar a fome com sabor.' },
+    { emoji: '🥤', title: 'Bebidas', text: 'Refrigerantes gelados e sucos refrescantes.' },
+    { emoji: '🍬', title: 'Doces', text: 'Chicletes, balas e os clássicos Finis!' },
+    { emoji: '🍦', title: 'Sorvetes', text: 'Picolés saborosos para refrescar seus dias.' }
+  ];
+
+  const funcionalidades = [
+    { emoji: '⏰', title: 'Compra Antecipada', text: 'Peça com antecedência e garanta seu lanche sem correria.' },
+    { emoji: '🚶‍♂️❌', title: 'Evite Filas', text: 'Retire direto no balcão, sem pegar fila.' },
+    { emoji: '📱', title: 'Compre de Qualquer Lugar', text: 'Na sala, no pátio ou onde quiser.' },
+    { emoji: '💳', title: 'Pagamento Rápido', text: 'Pague online ou na hora. Praticidade total!' }
+  ];
 
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div className="app-container">
+      <div className="content">
+        <h1>
+          <span>🏫</span> Bem-vindo à Lanchonete Escolar
+        </h1>
+        <p>O app ideal para alunos pedirem seus lanches de forma rápida, segura e divertida!</p>
+        <p>No App você poderá comprar:</p>
 
-      {/* Main content */}
-      <main className="flex-grow-1">
-        {/* Categorias */}
-        <section id="home" className="bg-light text-dark py-5">
-          <div className="container text-center">
-            <h1 className="mb-3">
-              <i className="bi bi-shop-window me-2"></i>
-              Bem-vindo à Lanchonete Escolar
-            </h1>
-            <p className="lead mb-5">
-              O app ideal para alunos pedirem seus lanches de forma rápida, segura e divertida!
-
-            </p>
-            <p className="lead mb-5">
-              No App você podera comprar:
-            </p>
-            <div className="row justify-content-center">
-              {[
-                { emoji: '🛍️', title: 'Salgados', text: 'Chips e snacks crocantes para matar a fome com sabor.' },
-                { emoji: '🥤', title: 'Bebidas', text: 'Refrigerantes gelados e sucos refrescantes.' },
-                { emoji: '🍬', title: 'Doces', text: 'Chicletes, balas e os clássicos Finis!' },
-                { emoji: '🍦', title: 'Sorvetes', text: 'Picolés saborosos para refrescar seus dias.' }
-              ].map((item, i) => (
-                <div key={i} className="col-6 col-md-3 mb-4">
-                  <div className="card h-100 shadow-sm">
-                    <div className="card-body text-center">
-                      <span className="fs-1">{item.emoji}</span>
-                      <h5 className="card-title mt-2">{item.title}</h5>
-                      <p className="card-text small">{item.text}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+        <div className="grid">
+          {categorias.map((item, index) => (
+            <div key={index} className="card">
+              <div className="emoji">{item.emoji}</div>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
             </div>
-          </div>
-        </section>
-         
+          ))}
+        </div>
 
-        {/* Funcionalidades */}
-        <section id="funcionalidades" className="bg-light text-dark py-5">
-          <div className="container text-center">
-            <h2 className="mb-4">
-              <i className="bi bi-stars me-2"></i>
-              Funcionalidades do App
-            </h2>
-            <p className="lead mb-5">
-              Pensado para facilitar a sua experiência com lanches na escola. Rápido, prático e sem filas!
-            </p>
+        <h2>
+          <span>✨</span> Funcionalidades do App
+        </h2>
+        <p>Pensado para facilitar a sua experiência com lanches na escola. Rápido, prático e sem filas!</p>
 
-            <div className="row justify-content-center">
-              {[
-                { emoji: '⏰', title: 'Compra Antecipada', text: 'Peça com antecedência e garanta seu lanche sem correria.' },
-                { emoji: '🚶‍♂️❌', title: 'Evite Filas', text: 'Retire direto no balcão, sem pegar fila.' },
-                { emoji: '📱', title: 'Compre de Qualquer Lugar', text: 'Na sala, no pátio ou onde quiser.' },
-                { emoji: '💳', title: 'Pagamento Rápido', text: 'Pague online ou na hora. Praticidade total!' }
-              ].map((item, i) => (
-                <div key={i} className="col-6 col-md-3 mb-4">
-                  <div className="card h-100 shadow-sm">
-                    <div className="card-body text-center">
-                      <span className="fs-1">{item.emoji}</span>
-                      <h5 className="card-title mt-2">{item.title}</h5>
-                      <p className="card-text small">{item.text}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+        <div className="grid">
+          {funcionalidades.map((item, index) => (
+            <div key={index} className="card">
+              <div className="emoji">{item.emoji}</div>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
             </div>
-          </div>
-        </section>
-      </main>
+          ))}
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
