@@ -116,3 +116,22 @@
     margin-top: 0;
   }
 }
+.welcome-message {
+  padding: 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: rgb(255, 0, 153); /* rosa */
+}
+
+.sidebar-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: rgb(205, 2, 124); /* o rosa forte que você usou antes */
+  margin: 1rem 0 0.5rem 0;
+  text-align: center;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+

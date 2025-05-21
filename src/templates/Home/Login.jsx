@@ -1,26 +1,24 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importe o hook useNavigate
+import { useNavigate } from 'react-router-dom'; 
 import './Login.css';
 
 export const Login = () => {
-  const navigate = useNavigate(); // Inicialize o hook useNavigate
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [loginError, setLoginError] = useState(''); // Para exibir erros de login
+  const [loginError, setLoginError] = useState('');
 
   const handleLogin = (e) => {
-    e.preventDefault(); // Previna o comportamento padrão de recarregar a página
+    e.preventDefault();
 
-    // Resetar mensagens de erro
     setEmailError('');
     setPasswordError('');
     setLoginError('');
 
     let valid = true;
 
-    // Validação do Email
     if (!email) {
       setEmailError('Por favor, insira seu email.');
       valid = false;
@@ -29,39 +27,39 @@ export const Login = () => {
       valid = false;
     }
 
-    // Validação da Senha
     if (!password) {
       setPasswordError('Por favor, insira sua senha.');
       valid = false;
     }
 
-    if (valid) {
-      // Fazer requisição ao backend
-      fetch('http://localhost:8080/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }), // Enviar dados do login
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          navigate('/pedidos'); // Redireciona para pedidos se autenticado com sucesso
+    if (!valid) return;
+
+    fetch('http://localhost:8080/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, senha: password }), // Atenção aqui: a senha tem que chamar 'senha' como no backend
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        if (data.funcionario) {
+          localStorage.setItem('funcionario', JSON.stringify(data.funcionario));
         } else {
-          setLoginError(data.message); // Mostra erro se falhar
+          console.error('Objeto funcionario não recebido na resposta do login');
         }
-      })
-      .catch(error => {
-        console.error('Erro ao fazer login:', error);
-        setLoginError('Erro ao conectar ao servidor. Tente novamente.');
-      });
-    }
+        navigate('/pedidos');
+      } else {
+        setLoginError(data.message);
+      }
+    })
+    .catch(() => {
+      setLoginError('Erro ao conectar ao servidor. Tente novamente.');
+    });
   };
 
   return (
     <div className="login-container">
-      <h2 className="login-title">Login</h2>
+      <h2 className="login-title" style={{ color: 'rgb(255, 0, 153)' }}>Login de Administrador</h2>
       <form className="login-form" onSubmit={handleLogin}>
         <div className="input-group">
           <label>Email:</label>
@@ -83,7 +81,7 @@ export const Login = () => {
           />
           {passwordError && <div className="error-message">{passwordError}</div>}
         </div>
-        {loginError && <div className="error-message">{loginError}</div>} {/* Exibe erro geral */}
+        {loginError && <div className="error-message">{loginError}</div>}
         <button type="submit" className="login-button">Entrar</button>
         <h2 className="sair"><a href="/">VOLTAR</a></h2>
       </form>

@@ -1,93 +1,106 @@
-/* Estilos para a página de login */
+/* Login.css */
+
 .login-container {
+  min-height: 100vh;
+  background-color: #f0f0f0; /* cinza clarinho */
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  height: 100vh;
-  background-color: #fff; /* Fundo branco */
-  font-family: Arial, sans-serif;
+  align-items: center;
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .login-title {
-  margin-bottom: 20px;
-  font-size: 28px;
-  color: #333;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #222;
 }
 
 .login-form {
-  display: flex;
-  flex-direction: column;
-  width: 350px;
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2); /* Sombra levemente rosa */
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
 }
 
 .input-group {
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #444;
 }
 
 .input-field {
-  width: 100%;
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid #ff69b4; /* Bordas rosa */
-  transition: border-color 0.3s, box-shadow 0.3s;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
 }
 
 .input-field:focus {
-  border-color: #ff69b4; /* Rosa para foco */
-  box-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
+  border-color: rgb(255, 0, 153);
+  outline: none;
 }
 
 .input-field.error {
-  border-color: #e91e63; /* Vermelho para erro */
+  border-color: #e74c3c;
 }
 
 .error-message {
-  color: #e91e63; /* Vermelho para mensagens de erro */
-  font-size: 12px;
-  margin-top: 5px; /* Espaço acima da mensagem de erro */
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  color: #e74c3c;
+  font-weight: 600;
 }
 
 .login-button {
-  padding: 12px;
-  background-color: #ff69b4; /* Botão rosa */
+  background-color: rgb(255, 0, 153);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
+  padding: 0.8rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  width: 100%;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background-color 0.3s ease;
 }
 
 .login-button:hover {
-  background-color: #ff1493; /* Tom mais escuro de rosa para hover */
-  transform: translateY(-2px);
+  background-color: #d400b0;
 }
 
-/* Acessibilidade e segurança */
-input {
-  outline: none; /* Remove contorno padrão */
+.sair {
+  margin-top: 1.5rem;
+  text-align: center;
 }
 
-input[type="email"], input[type="password"] {
-  font-size: 16px;
+.sair a {
+  color: rgb(255, 0, 153);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-input:required {
-  box-shadow: none; /* Remove sombra em campos obrigatórios */
+.sair a:hover {
+  color: #d400b0;
+  text-decoration: underline;
 }
 
-button:disabled {
-  background-color: #ddd;
-  cursor: not-allowed;
+.login-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: rgb(255, 0, 153); /* Rosa forte */
 }
-
-html, body, #root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-

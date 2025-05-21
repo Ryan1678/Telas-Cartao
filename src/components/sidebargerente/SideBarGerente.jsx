@@ -5,9 +5,15 @@ import './SideBarGerente.css';
 const SideBarGerente = () => {
   const location = useLocation();
 
+  // Pega o funcionário do localStorage
+  const funcionarioJson = localStorage.getItem('funcionario');
+  const funcionario = funcionarioJson ? JSON.parse(funcionarioJson) : null;
+  const primeiroNome = funcionario?.nome ? funcionario.nome.split(' ')[0] : 'administrador';
+
   return (
-    <aside className="sidebar">
-      <h2 className="sidebar-logo">Lanchonete ADM</h2>
+    <aside className="sidebar" style={{ backgroundColor: '#f0f0f0' /* cinza clarinho */ }}>
+      <h1 className="sidebar-title">Lanchonete ADM</h1>
+      <h2 className="sidebar-logo">Olá administrador, {primeiroNome}</h2>
       <ul>
         <li>
           <a href="/pedidos" className={location.pathname === '/pedidos' ? 'active' : ''}>
