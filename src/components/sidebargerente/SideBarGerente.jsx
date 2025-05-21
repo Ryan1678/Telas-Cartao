@@ -30,6 +30,11 @@ const SideBarGerente = () => {
             <i className="fa fa-users"></i> Funcionários
           </a>
         </li>
+        <li>
+          <a href="/mensagens" className={location.pathname === '/mensagens' ? 'active' : ''}>
+            <i className="fa fa-users"></i> Mensagens
+          </a>
+        </li>
       </ul>
       <h2 className="sair"><a href="/">Sair</a></h2>
     </aside>

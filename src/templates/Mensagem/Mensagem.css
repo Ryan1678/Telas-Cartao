@@ -164,29 +164,3 @@ tbody tr:hover {
   background-color: rgb(205, 2, 124);
   border-radius: 20px;
 }
-
-.input-select {
-  margin-bottom: 15px;
-  margin-right: 15px;
-  width: 100%;
-  padding: 10px 12px;
-  font-size: 16px;
-  border: 1.5px solid #ccc;
-  border-radius: 6px;
-  background-color: white;
-  appearance: none; /* Remove o estilo padrão do select */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%23999' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px 16px;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-}
-
-.input-select:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}

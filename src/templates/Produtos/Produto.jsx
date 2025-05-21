@@ -2,18 +2,33 @@ import React, { useState, useEffect } from 'react';
 import './Produto.css';
 import SideBarGerente from '../../components/sidebargerente/SideBarGerente';
 
+// Função para converter array de bytes em base64
+function byteArrayToBase64(byteArray) {
+  const binaryString = byteArray.reduce(
+    (data, byte) => data + String.fromCharCode(byte),
+    ''
+  );
+  return window.btoa(binaryString);
+}
+
 export const Produto = () => {
   const [produtos, setProdutos] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [currentProduto, setCurrentProduto] = useState(null);
-  const [imageFile, setImageFile] = useState(null); // Estado para o arquivo da imagem
 
-  // Fetch produtos from the backend on component mount
   useEffect(() => {
     fetch('http://localhost:8080/produto')
       .then(response => response.json())
-      .then(data => setProdutos(data))
+      .then(data => {
+        const produtosComImagem = data.map(p => {
+          if (p.imagem && Array.isArray(p.imagem)) {
+            p.imagemBase64 = `data:image/jpeg;base64,${byteArrayToBase64(p.imagem)}`;
+          }
+          return p;
+        });
+        setProdutos(produtosComImagem);
+      })
       .catch(error => console.error('Erro ao carregar produtos:', error));
   }, []);
 
@@ -24,15 +39,21 @@ export const Produto = () => {
 
   const handleAddClick = () => {
     setIsAdding(true);
-    setCurrentProduto({ id: '', imagem: '', nome: '', tipo: '', preco: 0.0, descricao: '' });
-    setImageFile(null); // Resetar a imagem ao adicionar novo produto
+    setCurrentProduto({
+      id: '',
+      imagemBase64: '',
+      nome: '',
+      tipo: '',
+      preco: 0.0,
+      descricao: ''
+    });
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCurrentProduto({
       ...currentProduto,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -43,7 +64,7 @@ export const Produto = () => {
       reader.onloadend = () => {
         setCurrentProduto({
           ...currentProduto,
-          imagem: reader.result, // Armazenar a imagem como base64
+          imagemBase64: reader.result
         });
       };
       reader.readAsDataURL(file);
@@ -51,67 +72,62 @@ export const Produto = () => {
   };
 
   const handleSaveClick = () => {
-    if (isAdding) {
-      fetch('http://localhost:8080/produto', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(currentProduto),
+    const produtoParaEnviar = {
+      nome: currentProduto.nome,
+      tipo: currentProduto.tipo,
+      preco: currentProduto.preco,
+      descricao: currentProduto.descricao,
+      imagemBase64: currentProduto.imagemBase64
+    };
+
+    const url = isAdding
+      ? 'http://localhost:8080/produto'
+      : `http://localhost:8080/produto/${currentProduto.id}`;
+    const method = isAdding ? 'POST' : 'PUT';
+
+    fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(produtoParaEnviar)
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Erro ao salvar produto');
+        return res.json();
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erro ao adicionar produto');
-          }
-          return response.json();
-        })
-        .then(newProduto => {
-          setProdutos([...produtos, newProduto]);
-          setIsAdding(false);
-          setCurrentProduto(null);
-        })
-        .catch(error => console.error('Erro ao adicionar produto:', error));
-    } else {
-      fetch(`http://localhost:8080/produto/${currentProduto.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(currentProduto),
+      .then(produtoResp => {
+        if (produtoResp.imagem && Array.isArray(produtoResp.imagem)) {
+          produtoResp.imagemBase64 = `data:image/jpeg;base64,${byteArrayToBase64(produtoResp.imagem)}`;
+        }
+
+        if (isAdding) {
+          setProdutos([...produtos, produtoResp]);
+        } else {
+          setProdutos(produtos.map(p => (p.id === produtoResp.id ? produtoResp : p)));
+        }
+
+        setIsAdding(false);
+        setIsEditing(false);
+        setCurrentProduto(null);
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erro ao atualizar produto');
-          }
-          return response.json();
-        })
-        .then(updatedProduto => {
-          const updatedProdutos = produtos.map(produto =>
-            produto.id === updatedProduto.id ? updatedProduto : produto
-          );
-          setProdutos(updatedProdutos);
-          setIsEditing(false);
-          setCurrentProduto(null);
-        })
-        .catch(error => console.error('Erro ao atualizar produto:', error));
-    }
+      .catch(console.error);
   };
 
   const handleCancelClick = () => {
     setIsEditing(false);
     setIsAdding(false);
-    setCurrentProduto(null); // Reset currentProduto to clear the form
+    setCurrentProduto(null);
   };
 
   const handleDeleteClick = (id) => {
-    fetch(`http://localhost:8080/produto/${id}`, {
-      method: 'DELETE',
-    })
-      .then(() => {
-        const updatedProdutos = produtos.filter(produto => produto.id !== id);
-        setProdutos(updatedProdutos);
-      })
-      .catch(error => console.error('Erro ao excluir produto:', error));
+    const confirmDelete = window.confirm("Tem certeza que deseja excluir este produto?");
+    if (!confirmDelete) return;
+
+    fetch(`http://localhost:8080/produto/${id}`, { method: 'DELETE' })
+      .then(() => setProdutos(produtos.filter(p => p.id !== id)))
+      .catch(error => {
+        console.error("Erro ao excluir produto:", error);
+        alert("Erro ao excluir o produto.");
+      });
   };
 
   return (
@@ -119,54 +135,87 @@ export const Produto = () => {
       <SideBarGerente />
       <main className="main-content">
         <h1>Produtos</h1>
-        <button className="adiciona" onClick={handleAddClick}>Adicionar Produto</button>
+        <button className="adiciona" onClick={handleAddClick}>
+          Adicionar Produto
+        </button>
 
-        {/* Formulário de edição/adicionamento */}
         {(isEditing || isAdding) && (
           <div className="edit-form">
             <h2>{isAdding ? 'Adicionar Produto' : 'Editar Produto'}</h2>
+
             <input
               type="text"
               name="id"
               value={currentProduto.id}
               disabled
               placeholder="ID"
+              className="input-text"
             />
+
             <input
-              type="file" // Campo de upload de imagem
+              type="file"
               accept="image/*"
               onChange={handleImageChange}
+              className="input-file"
             />
+
+            {currentProduto.imagemBase64 && (
+              <img
+                src={currentProduto.imagemBase64}
+                alt="Preview"
+                width="100"
+                style={{ marginBottom: '10px' }}
+              />
+            )}
+
             <input
               type="text"
               name="nome"
               value={currentProduto.nome}
               onChange={handleInputChange}
               placeholder="Nome"
+              className="input-text"
             />
-            <input
-              type="text"
+
+            <select
               name="tipo"
               value={currentProduto.tipo}
               onChange={handleInputChange}
-              placeholder="Tipo"
-            />
+              className="input-select"
+            >
+              <option value="">Selecione o tipo</option>
+              <option value="Sorvete">Sorvete</option>
+              <option value="Salgado">Salgado</option>
+              <option value="Doce">Doce</option>
+              <option value="Bebidas">Bebidas</option>
+            </select>
+
             <input
-              type="number" // Use number input for price
+              type="number"
               name="preco"
               value={currentProduto.preco}
               onChange={handleInputChange}
               placeholder="Preço"
+              className="input-text"
+              step="0.01"
+              min="0"
             />
+
             <input
               type="text"
               name="descricao"
               value={currentProduto.descricao}
               onChange={handleInputChange}
               placeholder="Descrição"
+              className="input-text"
             />
-            <button onClick={handleSaveClick}>Salvar</button>
-            <button onClick={handleCancelClick} style={{ marginLeft: '10px' }}>Cancelar</button>
+
+            <button className="save-button" onClick={handleSaveClick}>
+              Salvar
+            </button>
+            <button className="cancel-button" onClick={handleCancelClick}>
+              Cancelar
+            </button>
           </div>
         )}
 
@@ -183,17 +232,37 @@ export const Produto = () => {
             </tr>
           </thead>
           <tbody>
-            {produtos.map((produto) => (
+            {produtos.map(produto => (
               <tr key={produto.id}>
                 <td className="id">{produto.id}</td>
-                <td><img src={produto.imagem} alt={produto.nome} width="50" /></td>
+                <td>
+                  {produto.imagemBase64 ? (
+                    <img
+                      src={produto.imagemBase64}
+                      alt={produto.nome}
+                      width="50"
+                    />
+                  ) : (
+                    <span>Sem imagem</span>
+                  )}
+                </td>
                 <td>{produto.nome}</td>
                 <td>{produto.tipo}</td>
                 <td>{`R$ ${produto.preco.toFixed(2).replace('.', ',')}`}</td>
                 <td>{produto.descricao}</td>
                 <td>
-                  <button className="edit-button" onClick={() => handleEditClick(produto)}>Editar</button>
-                  <button className="delete-button" onClick={() => handleDeleteClick(produto.id)} style={{ marginLeft: '20px' }}>Excluir</button>
+                  <button
+                    className="edit-button"
+                    onClick={() => handleEditClick(produto)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteClick(produto.id)}
+                  >
+                    Excluir
+                  </button>
                 </td>
               </tr>
             ))}

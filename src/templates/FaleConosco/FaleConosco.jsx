@@ -6,21 +6,42 @@ function FaleConosco() {
     nome: '',
     email: '',
     titulo: '',
-    mensagem: '',
+    detalhamento: '',
   });
 
   const [submitted, setSubmitted] = useState(false);
 
   function handleChange(e) {
+    const { id, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [e.target.id]: e.target.value,
+      [id]: value,
     }));
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    setSubmitted(true);
+
+    // Enviar os dados para o backend
+    fetch('http://localhost:8080/mensagem', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Erro ao enviar mensagem');
+        return res.json();
+      })
+      .then(() => {
+        alert('Mensagem enviada com sucesso!');
+        setSubmitted(true);
+      })
+      .catch(err => {
+        console.error('Erro ao enviar:', err);
+        alert('Houve um erro ao enviar sua mensagem. Tente novamente.');
+      });
   }
 
   if (submitted) {
@@ -81,13 +102,13 @@ function FaleConosco() {
             required
           />
 
-          <label htmlFor="mensagem" className="form-label" style={{ marginTop: '20px' }}>Detalhamento</label>
+          <label htmlFor="detalhamento" className="form-label" style={{ marginTop: '20px' }}>Detalhamento</label>
           <textarea
-            id="mensagem"
+            id="detalhamento"
             className="form-control"
             rows="4"
             placeholder="Descreva sua mensagem"
-            value={formData.mensagem}
+            value={formData.detalhamento}
             onChange={handleChange}
             required
           />

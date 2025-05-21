@@ -10,12 +10,12 @@ export const Funcionario = () => {
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
-    fetchEmployees(); 
+    fetchEmployees();
   }, []);
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/funcionario"); 
+      const response = await axios.get("http://localhost:8080/funcionario");
       setEmployees(response.data);
     } catch (error) {
       console.error("Erro ao buscar funcionários:", error);
@@ -35,11 +35,15 @@ export const Funcionario = () => {
   };
 
   const handleDeleteClick = async (id) => {
+    const confirmDelete = window.confirm("Tem certeza que deseja excluir este funcionário?");
+    if (!confirmDelete) return;
+
     try {
-      await axios.delete(`http://localhost:8080/funcionario/${id}`); 
+      await axios.delete(`http://localhost:8080/funcionario/${id}`);
       setEmployees(employees.filter((employee) => employee.id !== id));
     } catch (error) {
       console.error("Erro ao excluir funcionário:", error);
+      alert("Erro ao excluir funcionário. Tente novamente.");
     }
   };
 
@@ -51,16 +55,17 @@ export const Funcionario = () => {
     try {
       if (isEdit) {
         // Atualizar funcionário existente
-        await axios.put(`http://localhost:8080/funcionario/${currentEmployee.id}`, currentEmployee); 
+        await axios.put(`http://localhost:8080/funcionario/${currentEmployee.id}`, currentEmployee);
         setEmployees(employees.map((emp) => (emp.id === currentEmployee.id ? currentEmployee : emp)));
       } else {
         // Adicionar novo funcionário
-        const response = await axios.post("http://localhost:8080/funcionario", currentEmployee); 
+        const response = await axios.post("http://localhost:8080/funcionario", currentEmployee);
         setEmployees([...employees, response.data]);
       }
       setModalVisible(false);
     } catch (error) {
       console.error("Erro ao salvar funcionário:", error);
+      alert("Erro ao salvar funcionário. Tente novamente.");
     }
   };
 
