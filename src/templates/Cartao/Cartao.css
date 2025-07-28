@@ -147,7 +147,7 @@ tbody tr:hover {
 
 .delete-button {
   border-color: #83024d;
-  color: #e73cae;
+  color: #8a005c;
 }
 
 .delete-button:hover {
@@ -165,50 +165,3 @@ tbody tr:hover {
   border-radius: 20px;
 }
 
-/* Estilo comum para selects no formulário */
-.edit-form select {
-  width: 100%;
-  padding: 0.7rem 1rem;
-  margin-bottom: 1rem;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: rgb(50, 50, 50);
-  appearance: none; /* remove seta padrão para customizar */
-  background-color: white;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'10'%20height%3D'5'%20viewBox%3D'0%200%2010%205'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M0%200l5%205%205-5z'%20fill%3D'%23cd027c'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 10px 5px;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-}
-
-.edit-form select:focus {
-  border-color: rgb(205, 2, 124);
-  outline: none;
-}
-
-/* Se quiser pode adicionar cor no texto para opções específicas no formulário, mas geralmente não se estiliza individualmente dentro do select */
-.filter-button {
-  background-color: transparent;
-  border: 2px solid rgb(205, 2, 124);
-  color: rgb(205, 2, 124);
-  padding: 0.5rem 1.2rem;
-  border-radius: 30px;
-  font-weight: 600;
-  margin: 0 0.3rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.filter-button:hover {
-  background-color: rgb(205, 2, 124);
-  color: white;
-}
-
-.filter-button.active {
-  background-color: rgb(205, 2, 124);
-  color: white;
-}

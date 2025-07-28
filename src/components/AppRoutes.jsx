@@ -10,6 +10,7 @@ import { Produto } from "../templates/Produtos/Produto";
 import Mensagem from "../templates/Mensagem/Mensagem";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutPublico from "../layouts/LayoutPublico";
+import { Cartao } from "../templates/Cartao/Cartao";
 
 const AppRoutes = () => {
   return (
@@ -31,6 +32,7 @@ const AppRoutes = () => {
         <Route path='/funcionario' element={<Funcionario />} />
         <Route path='/produtos' element={<Produto />} />
         <Route path='/mensagens' element={<Mensagem />} />
+        <Route path='/cartoes' element={<Cartao />} />
       </Route>
     </Routes>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
 export const Login = () => {
@@ -34,32 +34,19 @@ export const Login = () => {
 
     if (!valid) return;
 
-    fetch('http://localhost:8080/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, senha: password }), // Atenção aqui: a senha tem que chamar 'senha' como no backend
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        if (data.funcionario) {
-          localStorage.setItem('funcionario', JSON.stringify(data.funcionario));
-        } else {
-          console.error('Objeto funcionario não recebido na resposta do login');
-        }
-        navigate('/pedidos');
-      } else {
-        setLoginError(data.message);
-      }
-    })
-    .catch(() => {
-      setLoginError('Erro ao conectar ao servidor. Tente novamente.');
-    });
+    // Simulando login bem-sucedido (sem conexão com backend)
+    const fakeFuncionario = {
+      nome: 'Administrador Simulado',
+      email: email,
+    };
+
+    localStorage.setItem('funcionario', JSON.stringify(fakeFuncionario));
+    navigate('/pedidos');
   };
 
   return (
     <div className="login-container">
-      <h2 className="login-title" style={{ color: 'rgb(255, 0, 153)' }}>Login de Administrador</h2>
+      <h2 className="login-title" style={{ color: 'rgb(255, 0, 153)' }}>Login de Administrador/Vendedor</h2>
       <form className="login-form" onSubmit={handleLogin}>
         <div className="input-group">
           <label>Email:</label>

@@ -24,9 +24,6 @@ const NavBar = () => {
               <Link to="/" className="nav-link custom-link">Início</Link>
             </li>
             <li className="nav-item">
-              <Link to="/visual" className="nav-link custom-link">Produtos</Link>
-            </li>
-            <li className="nav-item">
               <Link to="/quem" className="nav-link custom-link">Quem somos</Link>
             </li>
             <li className="nav-item">

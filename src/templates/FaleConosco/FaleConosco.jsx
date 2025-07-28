@@ -4,7 +4,7 @@ import './FaleConosco.css';
 function FaleConosco() {
   const [formData, setFormData] = useState({
     nome: '',
-    email: '',
+    telefone: '',
     titulo: '',
     detalhamento: '',
   });
@@ -22,26 +22,11 @@ function FaleConosco() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    // Enviar os dados para o backend
-    fetch('http://localhost:8080/mensagem', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Erro ao enviar mensagem');
-        return res.json();
-      })
-      .then(() => {
-        alert('Mensagem enviada com sucesso!');
-        setSubmitted(true);
-      })
-      .catch(err => {
-        console.error('Erro ao enviar:', err);
-        alert('Houve um erro ao enviar sua mensagem. Tente novamente.');
-      });
+    // Simulando envio — backend será adicionado futuramente
+    console.log('Mensagem simulada:', formData);
+
+    alert('Mensagem simulada como enviada!');
+    setSubmitted(true);
   }
 
   if (submitted) {
@@ -80,13 +65,13 @@ function FaleConosco() {
             required
           />
 
-          <label htmlFor="email" className="form-label" style={{ marginTop: '20px' }}>Email</label>
+          <label htmlFor="telefone" className="form-label" style={{ marginTop: '20px' }}>Telefone</label>
           <input
-            id="email"
-            type="email"
+            id="telefone"
+            type="tel"
             className="form-control"
-            placeholder="seuemail@exemplo.com"
-            value={formData.email}
+            placeholder="(DDD) 91234-5678"
+            value={formData.telefone}
             onChange={handleChange}
             required
           />

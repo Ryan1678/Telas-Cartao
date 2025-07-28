@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="footer-inner">
         <div className="footer-section">
           <h6><i className="bi bi-box-seam me-1"></i> Nesse Site</h6>
-          <p className="small">Aluno ou professor poderá visualizar algumas funções disponíveis no nosso aplicativo web.</p>
+          <p className="small">Focado para os vendedores e administradores, se não for seu caso, retire-se do site e vá para a aplicação focada em clientes (mobile).</p>
         </div>
 
         <div className="footer-section">

@@ -17,17 +17,19 @@ const SideBarGerente = () => {
       <ul>
         <li>
           <a href="/pedidos" className={location.pathname === '/pedidos' ? 'active' : ''}>
-            <i className="fa fa-shopping-cart"></i> Pedidos
+            <i className="fa fa-shopping-cart"></i> Solicitações
           </a>
         </li>
-        <li>
-          <a href="/produtos" className={location.pathname === '/produtos' ? 'active' : ''}>
-            <i className="fa fa-cutlery"></i> Produtos
+
+       <li>
+          <a href="/cartoes" className={location.pathname === '/cartoes' ? 'active' : ''}>
+            <i className="fa fa-shopping-cart"></i> Cartões
           </a>
         </li>
+
         <li>
           <a href="/funcionario" className={location.pathname === '/funcionario' ? 'active' : ''}>
-            <i className="fa fa-users"></i> Funcionários
+            <i className="fa fa-users"></i> Usuários
           </a>
         </li>
         <li>

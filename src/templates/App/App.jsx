@@ -2,31 +2,55 @@ import React from 'react';
 import './App.css'; // importe o arquivo CSS
 
 function App() {
-  const categorias = [
-    { emoji: '🛍️', title: 'Salgados', text: 'Chips e snacks crocantes para matar a fome com sabor.' },
-    { emoji: '🥤', title: 'Bebidas', text: 'Refrigerantes gelados e sucos refrescantes.' },
-    { emoji: '🍬', title: 'Doces', text: 'Chicletes, balas e os clássicos Finis!' },
-    { emoji: '🍦', title: 'Sorvetes', text: 'Picolés saborosos para refrescar seus dias.' }
+  const papeis = [
+    {
+      emoji: '🛠️',
+      title: 'Administrador',
+      text: 'Responsável pela gestão das informações da lanchonete, incluindo recarga dos cartões e acesso ao banco de dados.'
+    },
+    {
+      emoji: '💳',
+      title: 'Vendedor',
+      text: 'Realiza a retirada do débito do valor diretamente do cartão do aluno.'
+    }
   ];
 
-  const funcionalidades = [
-    { emoji: '⏰', title: 'Compra Antecipada', text: 'Peça com antecedência e garanta seu lanche sem correria.' },
-    { emoji: '🚶‍♂️❌', title: 'Evite Filas', text: 'Retire direto no balcão, sem pegar fila.' },
-    { emoji: '📱', title: 'Compre de Qualquer Lugar', text: 'Na sala, no pátio ou onde quiser.' },
-    { emoji: '💳', title: 'Pagamento Rápido', text: 'Pague online ou na hora. Praticidade total!' }
+  const beneficios = [
+    {
+      emoji: '📊',
+      title: 'Controle Total',
+      text: 'Realize recargas, edite os cartões e gerencie tudo em um só lugar.'
+    },
+    {
+      emoji: '⏱️',
+      title: 'Agilidade no Atendimento',
+      text: 'Reduza filas e aumente a eficiência no horário do lanche.'
+    },
+    {
+      emoji: '🔐',
+      title: 'Segurança',
+      text: 'Transações seguras com cartões vinculados aos alunos.'
+    },
+    {
+      emoji: '🧑‍🤝‍🧑',
+      title: 'Experiência Melhorada',
+      text: 'Tanto alunos quanto funcionários aproveitam uma rotina mais organizada e prática.'
+    }
   ];
 
   return (
     <div className="app-container">
       <div className="content">
         <h1>
-          <span>🏫</span> Bem-vindo à Lanchonete Escolar
+          <span>🍽️</span> Plataforma da Lanchonete Escolar
         </h1>
-        <p>O app ideal para alunos pedirem seus lanches de forma rápida, segura e divertida!</p>
-        <p>No App você poderá comprar:</p>
+        <p>Uma solução pensada para modernizar a experiência de vendas e gestão na lanchonete da escola.</p>
 
+        <h2>
+          <span>👥</span> Papéis e Responsabilidades
+        </h2>
         <div className="grid">
-          {categorias.map((item, index) => (
+          {papeis.map((item, index) => (
             <div key={index} className="card">
               <div className="emoji">{item.emoji}</div>
               <h3>{item.title}</h3>
@@ -36,12 +60,10 @@ function App() {
         </div>
 
         <h2>
-          <span>✨</span> Funcionalidades do App
+          <span>🚀</span> Benefícios da Plataforma
         </h2>
-        <p>Pensado para facilitar a sua experiência com lanches na escola. Rápido, prático e sem filas!</p>
-
         <div className="grid">
-          {funcionalidades.map((item, index) => (
+          {beneficios.map((item, index) => (
             <div key={index} className="card">
               <div className="emoji">{item.emoji}</div>
               <h3>{item.title}</h3>
