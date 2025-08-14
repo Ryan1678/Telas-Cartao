@@ -1,19 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Pedido.css';
 import SideBarGerente from '../../components/sidebargerente/SideBarGerente';
 
 export const Pedido = () => {
-  const [solicitacoes, setSolicitacoes] = useState([
-    { idCartao: 'CV123456', valor: 250.00, dataSolicitacao: '2025-07-10' },
-    { idCartao: 'CV987654', valor: 100.50, dataSolicitacao: '2025-07-12' },
-    { idCartao: 'CV456789', valor: 320.75, dataSolicitacao: '2025-07-13' },
-  ]);
+  const [solicitacoes, setSolicitacoes] = useState([]);
 
-  const handleDelete = (index) => {
+  // Buscar solicitações do backend
+  useEffect(() => {
+    axios.get('http://localhost:8080/solicitacoes')
+      .then(response => {
+        setSolicitacoes(response.data);
+      })
+      .catch(error => {
+        console.error("Erro ao buscar solicitações:", error);
+      });
+  }, []);
+
+  // Excluir solicitação
+  const handleDelete = (id) => {
     if (window.confirm('Tem certeza que deseja excluir esta solicitação?')) {
-      const novasSolicitacoes = [...solicitacoes];
-      novasSolicitacoes.splice(index, 1);
-      setSolicitacoes(novasSolicitacoes);
+      axios.delete(`http://localhost:8080/solicitacoes/${id}`)
+        .then(() => {
+          setSolicitacoes(prev => prev.filter(solicitacao => solicitacao.id !== id));
+        })
+        .catch(error => {
+          console.error("Erro ao excluir solicitação:", error);
+        });
     }
   };
 
@@ -34,16 +47,16 @@ export const Pedido = () => {
             </tr>
           </thead>
           <tbody>
-            {solicitacoes.map((solicitacao, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{solicitacao.idCartao}</td>
+            {solicitacoes.map((solicitacao) => (
+              <tr key={solicitacao.id}>
+                <td>{solicitacao.id}</td>
+                <td>{solicitacao.cartao?.id || 'Sem cartão'}</td>
                 <td>{solicitacao.valor.toFixed(2)}</td>
                 <td>{new Date(solicitacao.dataSolicitacao).toLocaleDateString('pt-BR')}</td>
                 <td>
                   <button
                     className="delete-button"
-                    onClick={() => handleDelete(index)}
+                    onClick={() => handleDelete(solicitacao.id)}
                   >
                     Excluir
                   </button>

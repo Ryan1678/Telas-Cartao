@@ -1,28 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Mensagem.css';
 import SideBarGerente from '../../components/sidebargerente/SideBarGerente';
 
 export const Mensagens = () => {
-  const [mensagens, setMensagens] = useState([
-    {
-      id: 1,
-      nome: 'João Silva',
-      telefone: '(11) 91234-5678',
-      titulo: 'Problema com cartão',
-      detalhamento: 'Meu cartão virtual não chegou ainda.',
-    },
-    {
-      id: 2,
-      nome: 'Maria Oliveira',
-      telefone: '(21) 99876-5432',
-      titulo: 'Dúvida sobre recarga',
-      detalhamento: 'Quero saber como funciona a recarga mensal.',
-    },
-  ]);
+  const [mensagens, setMensagens] = useState([]);
 
+  // Buscar mensagens no backend
+  useEffect(() => {
+    axios.get('http://localhost:8080/mensagens')
+      .then(response => {
+        setMensagens(response.data);
+      })
+      .catch(error => {
+        console.error("Erro ao buscar mensagens:", error);
+      });
+  }, []);
+
+  // Excluir mensagem
   const handleDeleteClick = (id) => {
     if (window.confirm('Deseja remover esta mensagem?')) {
-      setMensagens(prev => prev.filter(msg => msg.id !== id));
+      axios.delete(`http://localhost:8080/mensagens/${id}`)
+        .then(() => {
+          setMensagens(prev => prev.filter(msg => msg.id !== id));
+        })
+        .catch(error => {
+          console.error("Erro ao excluir mensagem:", error);
+        });
     }
   };
 
@@ -48,10 +52,10 @@ export const Mensagens = () => {
             <tbody>
               {mensagens.map(msg => (
                 <tr key={msg.id}>
-                  <td>{msg.nome}</td>
+                  <td>{msg.usuario?.nome || 'Sem nome'}</td>
                   <td>{msg.telefone}</td>
                   <td>{msg.titulo}</td>
-                  <td>{msg.detalhamento}</td>
+                  <td>{msg.texto}</td>
                   <td>
                     <button
                       className="delete-button"

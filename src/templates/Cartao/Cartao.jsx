@@ -1,32 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Cartao.css';
 import SideBarGerente from '../../components/sidebargerente/SideBarGerente';
 
-const initialCards = [
-  {
-    id: '1',
-    nome: 'Ana Silva',
-    numeroCartao: '1234 5678 9012 3456',
-    dataCadastro: '2024-01-10',
-    saldo: 1500.75,
-    status: 'Ativo',
-  },
-  {
-    id: '2',
-    nome: 'Carlos Souza',
-    numeroCartao: '9876 5432 1098 7654',
-    dataCadastro: '2023-12-05',
-    saldo: 250.0,
-    status: 'Inativo',
-  },
-];
-
 export const Cartao = () => {
-  const [cards, setCards] = useState(initialCards);
+  const [cards, setCards] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [tipoOperacao, setTipoOperacao] = useState('Entrada'); // Entrada ou Saída
+  const [tipoOperacao, setTipoOperacao] = useState('Entrada');
   const [valorOperacao, setValorOperacao] = useState('');
   const [cardSelecionado, setCardSelecionado] = useState(null);
+
+  useEffect(() => {
+    fetchCartoes();
+  }, []);
+
+  const fetchCartoes = async () => {
+    try {
+      const res = await axios.get('http://localhost:8080/cartoes');
+      setCards(res.data);
+    } catch (err) {
+      console.error('Erro ao buscar cartões:', err);
+    }
+  };
 
   const abrirModal = (card, tipo) => {
     setTipoOperacao(tipo);
@@ -35,29 +30,27 @@ export const Cartao = () => {
     setModalVisible(true);
   };
 
-  const handleOperacao = () => {
+  const handleOperacao = async () => {
     const valor = parseFloat(valorOperacao);
     if (isNaN(valor) || valor <= 0) {
       alert('Digite um valor válido');
       return;
     }
 
-    const novoSaldo =
-      tipoOperacao === 'Entrada'
-        ? cardSelecionado.saldo + valor
-        : cardSelecionado.saldo - valor;
+    try {
+      const endpoint =
+        tipoOperacao === 'Entrada'
+          ? `http://localhost:8080/cartoes/${cardSelecionado.id}/entrada`
+          : `http://localhost:8080/cartoes/${cardSelecionado.id}/saida`;
 
-    if (novoSaldo < 0) {
-      alert('Saldo insuficiente para a operação.');
-      return;
+      await axios.put(endpoint, null, { params: { valor } });
+
+      setModalVisible(false);
+      fetchCartoes();
+    } catch (err) {
+      console.error(`Erro na operação de ${tipoOperacao}:`, err);
+      alert(err.response?.data || 'Erro na operação');
     }
-
-    const cardsAtualizados = cards.map((c) =>
-      c.id === cardSelecionado.id ? { ...c, saldo: novoSaldo } : c
-    );
-
-    setCards(cardsAtualizados);
-    setModalVisible(false);
   };
 
   return (
@@ -107,20 +100,19 @@ export const Cartao = () => {
               <tr key={card.id}>
                 <td>{card.id}</td>
                 <td>{card.nome}</td>
-                <td>{card.numeroCartao}</td>
-                <td>{card.dataCadastro}</td>
-                <td>R$ {card.saldo.toFixed(2)}</td>
-                <td className={`status ${card.status.toLowerCase()}`}>
-                  {card.status}
+                <td>{card.numero}</td>
+                <td>{card.dataCadastro?.split('T')[0]}</td>
+                <td>R$ {card.saldo?.toFixed(2)}</td>
+                <td className={`status ${card.statusCartao?.toLowerCase()}`}>
+                  {card.statusCartao}
                 </td>
                 <td>
                   <button className="edit-button" onClick={() => abrirModal(card, 'Entrada')}>
-                   Entrada
-                 </button>
+                    Entrada
+                  </button>
                   <button className="delete-button" onClick={() => abrirModal(card, 'Saída')}>
-                   Saída
-                 </button>
-
+                    Saída
+                  </button>
                 </td>
               </tr>
             ))}

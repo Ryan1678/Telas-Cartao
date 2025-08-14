@@ -10,7 +10,7 @@ export const Login = () => {
   const [passwordError, setPasswordError] = useState('');
   const [loginError, setLoginError] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     setEmailError('');
@@ -34,19 +34,51 @@ export const Login = () => {
 
     if (!valid) return;
 
-    // Simulando login bem-sucedido (sem conexão com backend)
-    const fakeFuncionario = {
-      nome: 'Administrador Simulado',
-      email: email,
-    };
+    try {
+      const response = await fetch('http://localhost:8080/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          senha: password
+        })
+      });
 
-    localStorage.setItem('funcionario', JSON.stringify(fakeFuncionario));
-    navigate('/pedidos');
+      const data = await response.json();
+
+      if (!response.ok || data.error) {
+        setLoginError(data.error || 'Credenciais inválidas.');
+        return;
+      }
+
+      // Verifica o nível de acesso
+      const nivel = data.nivelAcesso ? data.nivelAcesso.toUpperCase() : '';
+      if (nivel !== 'ADMIN' && nivel !== 'VENDEDOR') {
+        setLoginError('Acesso negado. Apenas ADMIN ou VENDEDOR.');
+        return;
+      }
+
+      // Salva o usuário no localStorage
+      localStorage.setItem('funcionario', JSON.stringify(data));
+
+      // Redireciona conforme o nível
+      if (nivel === 'ADMIN') {
+        navigate('/funcionario'); // ADMIN vai para a página de usuários
+      } else if (nivel === 'VENDEDOR') {
+        navigate('/cartoes'); // VENDEDOR vai para a página de cartões
+      }
+    } catch (error) {
+      setLoginError('Erro ao conectar com o servidor.');
+    }
   };
 
   return (
     <div className="login-container">
-      <h2 className="login-title" style={{ color: 'rgb(255, 0, 153)' }}>Login de Administrador/Vendedor</h2>
+      <h2 className="login-title" style={{ color: 'rgb(255, 0, 153)' }}>
+        Login de Administrador/Vendedor
+      </h2>
       <form className="login-form" onSubmit={handleLogin}>
         <div className="input-group">
           <label>Email:</label>
@@ -69,8 +101,12 @@ export const Login = () => {
           {passwordError && <div className="error-message">{passwordError}</div>}
         </div>
         {loginError && <div className="error-message">{loginError}</div>}
-        <button type="submit" className="login-button">Entrar</button>
-        <h2 className="sair"><a href="/">VOLTAR</a></h2>
+        <button type="submit" className="login-button">
+          Entrar
+        </button>
+        <h2 className="sair">
+          <a href="/">VOLTAR</a>
+        </h2>
       </form>
     </div>
   );
