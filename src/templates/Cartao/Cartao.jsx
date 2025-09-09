@@ -3,33 +3,39 @@ import axios from 'axios';
 import './Cartao.css';
 import SideBarGerente from '../../components/sidebargerente/SideBarGerente';
 
-export const Cartao = () => {
+export const Cartao = ({ userId }) => {
   const [cards, setCards] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [tipoOperacao, setTipoOperacao] = useState('Entrada');
   const [valorOperacao, setValorOperacao] = useState('');
+  const [codigoRetirada, setCodigoRetirada] = useState('');
   const [cardSelecionado, setCardSelecionado] = useState(null);
 
   useEffect(() => {
     fetchCartoes();
   }, []);
 
+  // Buscar cartões do usuário
   const fetchCartoes = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/cartoes');
+      const res = await axios.get(`http://localhost:8080/api/cartao`);
       setCards(res.data);
     } catch (err) {
       console.error('Erro ao buscar cartões:', err);
+      alert('Erro ao buscar cartões');
     }
   };
 
+  // Abrir modal de operação
   const abrirModal = (card, tipo) => {
-    setTipoOperacao(tipo);
     setCardSelecionado(card);
+    setTipoOperacao(tipo);
     setValorOperacao('');
+    setCodigoRetirada('');
     setModalVisible(true);
   };
 
+  // Confirmar operação de entrada/saída
   const handleOperacao = async () => {
     const valor = parseFloat(valorOperacao);
     if (isNaN(valor) || valor <= 0) {
@@ -40,13 +46,20 @@ export const Cartao = () => {
     try {
       const endpoint =
         tipoOperacao === 'Entrada'
-          ? `http://localhost:8080/cartoes/${cardSelecionado.id}/entrada`
-          : `http://localhost:8080/cartoes/${cardSelecionado.id}/saida`;
+          ? `http://localhost:8080/api/cartao/${cardSelecionado.id}/entrada`
+          : `http://localhost:8080/api/cartao/${cardSelecionado.id}/saida`;
 
-      await axios.put(endpoint, null, { params: { valor } });
+      // Para saída, envia o código de resgate
+      const params =
+        tipoOperacao === 'Entrada'
+          ? { valor }
+          : { valor, codigoResgate: codigoRetirada };
+
+      await axios.put(endpoint, null, { params });
 
       setModalVisible(false);
-      fetchCartoes();
+      setCodigoRetirada('');
+      fetchCartoes(); // Atualiza lista
     } catch (err) {
       console.error(`Erro na operação de ${tipoOperacao}:`, err);
       alert(err.response?.data || 'Erro na operação');
@@ -78,8 +91,25 @@ export const Cartao = () => {
               step="0.01"
             />
 
-            <button onClick={handleOperacao}>Confirmar</button>
-            <button onClick={() => setModalVisible(false)}>Cancelar</button>
+            {tipoOperacao === 'Saída' && (
+              <input
+                type="text"
+                placeholder="Digite o código de retirada"
+                value={codigoRetirada}
+                onChange={(e) => setCodigoRetirada(e.target.value)}
+                style={{ marginTop: '10px' }}
+              />
+            )}
+
+            <button onClick={handleOperacao} style={{ marginTop: '10px' }}>
+              Confirmar
+            </button>
+            <button
+              onClick={() => setModalVisible(false)}
+              style={{ marginTop: '5px', backgroundColor: 'gray' }}
+            >
+              Cancelar
+            </button>
           </div>
         )}
 
@@ -107,10 +137,16 @@ export const Cartao = () => {
                   {card.statusCartao}
                 </td>
                 <td>
-                  <button className="edit-button" onClick={() => abrirModal(card, 'Entrada')}>
+                  <button
+                    className="edit-button"
+                    onClick={() => abrirModal(card, 'Entrada')}
+                  >
                     Entrada
                   </button>
-                  <button className="delete-button" onClick={() => abrirModal(card, 'Saída')}>
+                  <button
+                    className="delete-button"
+                    onClick={() => abrirModal(card, 'Saída')}
+                  >
                     Saída
                   </button>
                 </td>
