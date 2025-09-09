@@ -42,20 +42,20 @@ export const Mensagens = () => {
           <table>
             <thead>
               <tr>
-                <th>Nome</th>
                 <th>Telefone</th>
                 <th>Titulo</th>
                 <th>Detalhamento</th>
+                <th>Data Envio</th>
                 <th>Ações</th>
               </tr>
             </thead>
             <tbody>
               {mensagens.map(msg => (
                 <tr key={msg.id}>
-                  <td>{msg.usuario?.nome || 'Sem nome'}</td>
                   <td>{msg.telefone}</td>
                   <td>{msg.titulo}</td>
                   <td>{msg.texto}</td>
+                  <td>{msg.dataMensagem}</td>
                   <td>
                     <button
                       className="delete-button"

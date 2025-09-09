@@ -273,13 +273,15 @@ export const Funcionario = () => {
                   <td>{emp.email}</td>
                   <td>{emp.senha}</td>
 
-                  {filter === 'clientes' && (
-                    <>
-                      <td>{emp.dataNascimento || '-'}</td>
-                      <td>{emp.documento || '-'}</td>
-                      <td>{emp.telefone || '-'}</td>
-                    </>
-                  )}
+{filter === 'clientes' && (
+  <>
+    <td>{emp.cliente?.dataNascimento || '-'}</td>
+    <td>{emp.cliente?.documento || '-'}</td>
+    <td>{emp.cliente?.telefone || '-'}</td>
+  </>
+)}
+
+
 
                   <td className={`nivel-acesso ${emp.nivelAcesso ? emp.nivelAcesso.toLowerCase() : ''}`}>
                     {emp.nivelAcesso}

@@ -3,7 +3,6 @@ import './FaleConosco.css';
 
 function FaleConosco() {
   const [formData, setFormData] = useState({
-    nome: '',
     telefone: '',
     titulo: '',
     detalhamento: '',
@@ -19,14 +18,35 @@ function FaleConosco() {
     }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    // Simulando envio — backend será adicionado futuramente
-    console.log('Mensagem simulada:', formData);
+    // Cria objeto com os nomes corretos para o back-end
+    const mensagem = {
+      telefone: formData.telefone,
+      titulo: formData.titulo,
+      texto: formData.detalhamento // Conversão de "detalhamento" para "texto"
+    };
 
-    alert('Mensagem simulada como enviada!');
-    setSubmitted(true);
+    try {
+      const response = await fetch('http://localhost:8080/mensagens', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(mensagem),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao enviar mensagem');
+      }
+
+      alert('Mensagem enviada com sucesso!');
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Erro no envio:', error);
+      alert('Falha ao enviar mensagem. Tente novamente.');
+    }
   }
 
   if (submitted) {
@@ -54,18 +74,9 @@ function FaleConosco() {
         </p>
 
         <form onSubmit={handleSubmit}>
-          <label htmlFor="nome" className="form-label">Nome</label>
-          <input
-            id="nome"
-            type="text"
-            className="form-control"
-            placeholder="Seu nome"
-            value={formData.nome}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="telefone" className="form-label" style={{ marginTop: '20px' }}>Telefone</label>
+          <label htmlFor="telefone" className="form-label" style={{ marginTop: '20px' }}>
+            Telefone
+          </label>
           <input
             id="telefone"
             type="tel"
@@ -76,7 +87,9 @@ function FaleConosco() {
             required
           />
 
-          <label htmlFor="titulo" className="form-label" style={{ marginTop: '20px' }}>Título do motivo</label>
+          <label htmlFor="titulo" className="form-label" style={{ marginTop: '20px' }}>
+            Título do motivo
+          </label>
           <input
             id="titulo"
             type="text"
@@ -87,7 +100,9 @@ function FaleConosco() {
             required
           />
 
-          <label htmlFor="detalhamento" className="form-label" style={{ marginTop: '20px' }}>Detalhamento</label>
+          <label htmlFor="detalhamento" className="form-label" style={{ marginTop: '20px' }}>
+            Detalhamento
+          </label>
           <textarea
             id="detalhamento"
             className="form-control"
@@ -98,7 +113,7 @@ function FaleConosco() {
             required
           />
 
-          <button type="submit" className="btn-custom">
+          <button type="submit" className="btn-custom" style={{ marginTop: '20px' }}>
             Enviar Mensagem
           </button>
         </form>
