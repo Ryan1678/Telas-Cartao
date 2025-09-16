@@ -237,6 +237,7 @@ export const Funcionario = () => {
                   <th>Data de nascimento</th>
                   <th>Documento</th>
                   <th>Telefone</th>
+                  <th>Tipo Cliente</th>
                 </>
               )}
               <th>Nível de Acesso</th>
@@ -278,6 +279,7 @@ export const Funcionario = () => {
     <td>{emp.cliente?.dataNascimento || '-'}</td>
     <td>{emp.cliente?.documento || '-'}</td>
     <td>{emp.cliente?.telefone || '-'}</td>
+    <td>{emp.cliente?.tipoCliente || '-'}</td>
   </>
 )}
 
