@@ -10,12 +10,13 @@ export const Cartao = ({ userId }) => {
   const [valorOperacao, setValorOperacao] = useState('');
   const [codigoRetirada, setCodigoRetirada] = useState('');
   const [cardSelecionado, setCardSelecionado] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(''); // 🔍 novo estado de pesquisa
 
   useEffect(() => {
     fetchCartoes();
   }, []);
 
-  // Buscar cartões do usuário
+  // Buscar cartões
   const fetchCartoes = async () => {
     try {
       const res = await axios.get(`http://localhost:8080/api/cartao`);
@@ -35,7 +36,7 @@ export const Cartao = ({ userId }) => {
     setModalVisible(true);
   };
 
-  // Confirmar operação de entrada/saída
+  // Confirmar operação
   const handleOperacao = async () => {
     const valor = parseFloat(valorOperacao);
     if (isNaN(valor) || valor <= 0) {
@@ -49,7 +50,6 @@ export const Cartao = ({ userId }) => {
           ? `http://localhost:8080/api/cartao/${cardSelecionado.id}/entrada`
           : `http://localhost:8080/api/cartao/${cardSelecionado.id}/saida`;
 
-      // Para saída, envia o código de resgate
       const params =
         tipoOperacao === 'Entrada'
           ? { valor }
@@ -59,18 +59,41 @@ export const Cartao = ({ userId }) => {
 
       setModalVisible(false);
       setCodigoRetirada('');
-      fetchCartoes(); // Atualiza lista
+      fetchCartoes();
     } catch (err) {
       console.error(`Erro na operação de ${tipoOperacao}:`, err);
       alert(err.response?.data || 'Erro na operação');
     }
   };
 
+  // 🔍 Filtro de pesquisa (ID ou número)
+  const filteredCards = cards.filter(
+    (card) =>
+      String(card.id).includes(searchTerm) ||
+      (card.numero && card.numero.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
   return (
     <div className="container">
       <SideBarGerente />
       <main className="main-content">
         <h1>Cartões</h1>
+
+        {/* 🔍 Barra de pesquisa */}
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+          <input
+            type="text"
+            placeholder="Pesquisar por ID ou Número do cartão"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              padding: '0.5rem',
+              width: '280px',
+              borderRadius: '8px',
+              border: '1px solid rgb(205, 2, 124)',
+            }}
+          />
+        </div>
 
         {modalVisible && (
           <div className="edit-form">
@@ -113,6 +136,7 @@ export const Cartao = ({ userId }) => {
           </div>
         )}
 
+        {/* 🔍 Lista filtrada */}
         <table>
           <thead>
             <tr>
@@ -126,7 +150,7 @@ export const Cartao = ({ userId }) => {
             </tr>
           </thead>
           <tbody>
-            {cards.map((card) => (
+            {filteredCards.map((card) => (
               <tr key={card.id}>
                 <td>{card.id}</td>
                 <td>{card.nome}</td>

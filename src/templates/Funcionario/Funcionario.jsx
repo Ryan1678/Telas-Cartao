@@ -12,11 +12,12 @@ export const Funcionario = () => {
     email: '',
     senha: '',
     nivelAcesso: 'ADMIN',
-    foto: '', // aqui armazenamos base64 da imagem
+    foto: '',
     statusUsuario: 'ATIVO',
   });
   const [isEdit, setIsEdit] = useState(false);
   const [filter, setFilter] = useState('todos');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchEmployees();
@@ -31,7 +32,7 @@ export const Funcionario = () => {
     }
   };
 
-  const handleAddClick = () => {
+  const resetForm = () => {
     setCurrentEmployee({
       id: '',
       nome: '',
@@ -42,6 +43,10 @@ export const Funcionario = () => {
       statusUsuario: 'ATIVO',
     });
     setIsEdit(false);
+  };
+
+  const handleAddClick = () => {
+    resetForm();
     setModalVisible(true);
   };
 
@@ -50,9 +55,9 @@ export const Funcionario = () => {
       id: employee.id || '',
       nome: employee.nome || '',
       email: employee.email || '',
-      senha: '', // senha fica vazia pra não mostrar no modal por segurança
+      senha: '',
       nivelAcesso: employee.nivelAcesso || 'ADMIN',
-      foto: employee.foto || '', // base64 vindo do backend
+      foto: employee.foto || '',
       statusUsuario: employee.statusUsuario || 'ATIVO',
     });
     setIsEdit(true);
@@ -70,7 +75,6 @@ export const Funcionario = () => {
     }
   };
 
-  // Upload foto convertendo em base64
   const handleFotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -101,7 +105,6 @@ export const Funcionario = () => {
       statusUsuario: currentEmployee.statusUsuario,
     };
 
-    // Só manda senha se estiver criando ou se usuário preencher a senha na edição
     if (!isEdit || (isEdit && currentEmployee.senha.trim())) {
       payload.senha = currentEmployee.senha;
     }
@@ -117,6 +120,7 @@ export const Funcionario = () => {
         await axios.post('http://localhost:8080/usuarios', payload);
       }
       setModalVisible(false);
+      resetForm();
       fetchEmployees();
     } catch (err) {
       console.error('Erro ao salvar funcionário:', err);
@@ -129,10 +133,16 @@ export const Funcionario = () => {
     setCurrentEmployee((prev) => ({ ...prev, [name]: value }));
   };
 
-  const filteredEmployees =
+  const filteredByType =
     filter === 'clientes'
       ? employees.filter((emp) => emp.nivelAcesso?.toLowerCase() === 'cliente')
       : employees.filter((emp) => emp.nivelAcesso?.toLowerCase() !== 'cliente');
+
+  const filteredEmployees = filteredByType.filter(
+    (emp) =>
+      emp.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(emp.id).includes(searchTerm)
+  );
 
   return (
     <div className="container">
@@ -155,6 +165,21 @@ export const Funcionario = () => {
           </button>
         </div>
 
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+          <input
+            type="text"
+            placeholder="Pesquisar por ID ou Email"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              padding: '0.5rem',
+              width: '250px',
+              borderRadius: '8px',
+              border: '1px solid rgb(205, 2, 124)',
+            }}
+          />
+        </div>
+
         {filter !== 'clientes' && (
           <button className="adiciona" onClick={handleAddClick}>
             Adicionar Usuário
@@ -162,68 +187,84 @@ export const Funcionario = () => {
         )}
 
         {modalVisible && (
-          <div className="edit-form">
-            <h2>{isEdit ? 'Editar Usuário' : 'Adicionar Usuário'}</h2>
+          <div className="modal-overlay">
+            <div className="edit-form">
+              <h2>{isEdit ? 'Editar Usuário' : 'Adicionar Usuário'}</h2>
 
-            {isEdit && (
-              <input type="text" name="id" value={currentEmployee.id} disabled placeholder="ID" />
-            )}
+              {isEdit && (
+                <input type="text" name="id" value={currentEmployee.id} disabled placeholder="ID" />
+              )}
 
-            <input
-              type="text"
-              name="nome"
-              value={currentEmployee.nome}
-              onChange={handleInputChange}
-              placeholder="Nome *"
-            />
-            <input
-              type="email"
-              name="email"
-              value={currentEmployee.email}
-              onChange={handleInputChange}
-              placeholder="Email *"
-            />
-            <input
-              type="password"
-              name="senha"
-              value={currentEmployee.senha}
-              onChange={handleInputChange}
-              placeholder="Senha *"
-            />
-            <select
-              name="nivelAcesso"
-              value={currentEmployee.nivelAcesso}
-              onChange={handleInputChange}
-            >
-              <option value="ADMIN">ADMIN</option>
-              <option value="VENDEDOR">VENDEDOR</option>
-            </select>
-
-            <input type="file" accept="image/*" onChange={handleFotoChange} />
-
-            {currentEmployee.foto && (
-              <img
-                src={currentEmployee.foto}
-                alt="Preview"
-                style={{ width: 80, height: 80, borderRadius: '50%', marginTop: 10 }}
+              <input
+                type="text"
+                name="nome"
+                value={currentEmployee.nome}
+                onChange={handleInputChange}
+                placeholder="Nome *"
               />
-            )}
+              <input
+                type="email"
+                name="email"
+                value={currentEmployee.email}
+                onChange={handleInputChange}
+                placeholder="Email *"
+              />
+              <input
+                type="password"
+                name="senha"
+                value={currentEmployee.senha}
+                onChange={handleInputChange}
+                placeholder="Senha *"
+              />
 
-            <select
-              name="statusUsuario"
-              value={currentEmployee.statusUsuario}
-              onChange={handleInputChange}
-            >
-              <option value="ATIVO">ATIVO</option>
-              <option value="INATIVO">INATIVO</option>
-              <option value="TROCAR SENHA">TROCAR SENHA</option>
-            </select>
+              <select
+                name="nivelAcesso"
+                value={currentEmployee.nivelAcesso}
+                onChange={handleInputChange}
+              >
+                <option value="ADMIN">ADMIN</option>
+                <option value="VENDEDOR">VENDEDOR</option>
+              </select>
 
-            <button onClick={handleSaveClick}>Salvar</button>
-            <button onClick={() => setModalVisible(false)}>Cancelar</button>
+              <input type="file" accept="image/*" onChange={handleFotoChange} />
+
+              {currentEmployee.foto && (
+                <img
+                  src={currentEmployee.foto}
+                  alt="Preview"
+                  style={{ width: 80, height: 80, borderRadius: '50%', marginTop: 10 }}
+                />
+              )}
+
+              <select
+                name="statusUsuario"
+                value={currentEmployee.statusUsuario}
+                onChange={handleInputChange}
+              >
+                <option value="ATIVO">ATIVO</option>
+                <option value="INATIVO">INATIVO</option>
+                <option value="TROCAR SENHA">TROCAR SENHA</option>
+              </select>
+
+              <div className="modal-actions">
+                <button className="save-button" onClick={handleSaveClick}>
+                  Salvar
+                </button>
+                <button
+                  className="cancel-button"
+                  onClick={() => {
+                    resetForm();
+                    setModalVisible(false);
+                  }}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
+        {/* tabela continua igual */}
         <table>
           <thead>
             <tr>
@@ -248,7 +289,6 @@ export const Funcionario = () => {
           </thead>
           <tbody>
             {filteredEmployees.map((emp) => {
-              // Corrige foto base64 para garantir prefixo válido
               const fotoSrc =
                 emp.foto && emp.foto.startsWith('data:image')
                   ? emp.foto
@@ -274,16 +314,14 @@ export const Funcionario = () => {
                   <td>{emp.email}</td>
                   <td>{emp.senha}</td>
 
-{filter === 'clientes' && (
-  <>
-    <td>{emp.cliente?.dataNascimento || '-'}</td>
-    <td>{emp.cliente?.documento || '-'}</td>
-    <td>{emp.cliente?.telefone || '-'}</td>
-    <td>{emp.cliente?.tipoCliente || '-'}</td>
-  </>
-)}
-
-
+                  {filter === 'clientes' && (
+                    <>
+                      <td>{emp.cliente?.dataNascimento || '-'}</td>
+                      <td>{emp.cliente?.documento || '-'}</td>
+                      <td>{emp.cliente?.telefone || '-'}</td>
+                      <td>{emp.cliente?.tipoCliente || '-'}</td>
+                    </>
+                  )}
 
                   <td className={`nivel-acesso ${emp.nivelAcesso ? emp.nivelAcesso.toLowerCase() : ''}`}>
                     {emp.nivelAcesso}
